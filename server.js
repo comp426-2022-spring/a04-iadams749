@@ -46,7 +46,7 @@ else{
     // console.log(debug)
     // console.log(log)
 
-    if(log){
+    if(log == true){
         // Setting up the morgan logging if --log=True is passed
         // Create a write stream to append to an access.log file
         const accessLog = fs.createWriteStream('access.log', { flags: 'a' })

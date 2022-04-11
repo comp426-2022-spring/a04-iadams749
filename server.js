@@ -24,6 +24,9 @@ if(args.help){
 }
 
 else{
+
+    var id = 0;
+
     // Define app using express
     var express = require('express')
     var app = express()
@@ -61,6 +64,7 @@ else{
     // Logging the request
     app.use((req, res, next) => {
         let logdata = {
+            i: id,
             remoteaddr: req.ip,
             remoteuser: req.user,
             time: Date.now(),
@@ -74,13 +78,15 @@ else{
             useragent: req.headers['user-agent']
         }
 
-        let sqlWrite = `INSERT INTO accesslog VALUES ('time', 'remoteaddr', 'remoteuser', 'method', 'url', 'protocol', 'httpversion', 'secure', 'status', 'referer', 'useragent');`;
+        let sqlWrite = `INSERT INTO accesslog VALUES (i, 'time', 'remoteaddr', 'remoteuser', 'method', 'url', 'protocol', 'httpversion', 'secure', 'status', 'referer', 'useragent');`;
 
         for (const [key, value] of Object.entries(logdata)) {
             sqlWrite = sqlWrite.replace(key, value)
         }
 
         db.exec(sqlWrite)
+
+        id = id+1
         
         // console.log(db.prepare(`SELECT * FROM accesslog`).all())
 
